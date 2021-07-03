@@ -22,13 +22,8 @@ var post = models.Post{
 	Thumbnail:   "https://cdn-images-1.medium.com/max/1024/1*x33olsSBh5LIJseSuf-W0A.jpeg",
 }
 
-var category = []models.Category{
-	{
-		Categories: "Android Development",
-	},
-	{
-		Categories: "Jetpack",
-	},
+var category = models.Category{
+	Categories: "Android Development",
 }
 
 func Load(db *gorm.DB) {

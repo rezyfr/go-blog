@@ -8,8 +8,8 @@ import (
 )
 
 type Category struct {
-	ID         uint32 `gorm:"primary_key;not null;unique;auto_increment" json:"id"`
-	Categories string `gorm:"unique" json:"categories"`
+	ID         uint32 `gorm:"primary_key;auto_increment" json:"id"`
+	Categories string `gorm:"unique;size:100;not null" json:"categories"`
 }
 
 func (c *Category) Prepare() {
