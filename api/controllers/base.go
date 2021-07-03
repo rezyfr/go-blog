@@ -8,6 +8,7 @@ import (
 	"github.com/rezyfr/go-blog/api/models"
 	"log"
 	"net/http"
+	"os"
 )
 
 type Server struct {
@@ -38,6 +39,6 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 }
 
 func (server *Server) Run(addr string) {
-	fmt.Println("Listening to port 8080")
+	fmt.Printf("Listening to %s:%s\n", os.Getenv("HOST"), os.Getenv("PORT"))
 	log.Fatal(http.ListenAndServe(addr, server.Router))
 }
