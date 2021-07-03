@@ -13,7 +13,7 @@ type Post struct {
 	Link        string    `gorm:"not null;unique" json:"link"`
 	Title       string    `gorm:"size:255;not null;unique" json:"title"`
 	Content     string    `gorm:"not null;" json:"content"`
-	Description string    `gorm:"size:255" json:"description"`
+	Description string    `json:"description"`
 	Author      User      `json:"author"`
 	AuthorID    uint32    `gorm:"not null" json:"author_id"`
 	CategoryId  string    `gorm:"not null" json:"categoryId"`
