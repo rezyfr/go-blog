@@ -15,7 +15,7 @@ type Post struct {
 	Content     string     `gorm:"not null;" json:"content"`
 	Description string     `gorm:"size:255" json:"description"`
 	Author      User       `json:"author"`
-	Categories  []Category `gorm:"not null"`
+	CategoryId  []uint32   `gorm:"not null" json:"categoryId"`
 	Thumbnail   string     `gorm:"not null" json:"thumbnail"`
 	CreatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
