@@ -11,6 +11,7 @@ import (
 	"github.com/rezyfr/go-blog/api/utils/formaterror"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 func (server *Server) CreateCategory(w http.ResponseWriter, r *http.Request) {
@@ -50,7 +51,7 @@ func (server *Server) GetCategories(w http.ResponseWriter, r *http.Request) {
 
 	category := models.Category{}
 
-	categories, err := category.FindAllCategorys(server.DB)
+	categories, err := category.FindAllCategories(server.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
@@ -63,10 +64,13 @@ func (server *Server) DeleteCategory(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	// Is a valid category id given to us?
-	guid := vars["guid"]
-
+	id, err := strconv.ParseUint(vars["id"], 10, 32)
+	if err != nil {
+		responses.ERROR(w, http.StatusBadRequest, err)
+		return
+	}
 	// Is this user authenticated?
-	uid, err := auth.ExtractTokenID(r)
+	_, err = auth.ExtractTokenID(r)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
 		return
@@ -74,17 +78,17 @@ func (server *Server) DeleteCategory(w http.ResponseWriter, r *http.Request) {
 
 	// Check if the category exist
 	category := models.Category{}
-	err = server.DB.Debug().Model(models.Category{}).Where("guid = ?", guid).Take(&category).Error
+	err = server.DB.Debug().Model(models.Category{}).Where("id = ?", id).Take(&category).Error
 	if err != nil {
 		responses.ERROR(w, http.StatusNotFound, errors.New("Unauthorized"))
 		return
 	}
 
-	_, err = category.DeleteCategory(server.DB, guid, uid)
+	_, err = category.DeleteCategory(server.DB, strconv.FormatUint(id, 10))
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
-	w.Header().Set("Entity", fmt.Sprintf("%s", guid))
+	w.Header().Set("Entity", fmt.Sprintf("%d", id))
 	responses.JSON(w, http.StatusNoContent, "")
 }
