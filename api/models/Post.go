@@ -15,6 +15,7 @@ type Post struct {
 	Content     string    `gorm:"not null;" json:"content"`
 	Description string    `gorm:"size:255" json:"description"`
 	Author      User      `json:"author"`
+	AuthorID    uint32    `gorm:"not null" json:"author_id"`
 	CategoryId  string    `gorm:"not null" json:"categoryId"`
 	Thumbnail   string    `gorm:"not null" json:"thumbnail"`
 	CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
@@ -59,7 +60,7 @@ func (p *Post) SavePost(db *gorm.DB) (*Post, error) {
 		return &Post{}, err
 	}
 	if p.Guid != "" {
-		err = db.Debug().Model(&User{}).Where("id = ?", p.Author.ID).Take(&p.Author).Error
+		err = db.Debug().Model(&User{}).Where("id = ?", p.AuthorID).Take(&p.Author).Error
 		if err != nil {
 			return &Post{}, err
 		}
@@ -76,7 +77,7 @@ func (p *Post) FindAllPosts(db *gorm.DB) (*[]Post, error) {
 	}
 	if len(posts) > 0 {
 		for i, _ := range posts {
-			err := db.Debug().Model(&User{}).Where("id = ?", posts[i].Author.ID).Take(&posts[i].Author).Error
+			err := db.Debug().Model(&User{}).Where("id = ?", posts[i].AuthorID).Take(&posts[i].Author).Error
 			if err != nil {
 				return &[]Post{}, err
 			}
@@ -92,7 +93,7 @@ func (p *Post) FindPostByID(db *gorm.DB, guid string) (*Post, error) {
 		return &Post{}, err
 	}
 	if p.Guid == "" {
-		err = db.Debug().Model(&User{}).Where("id = ?", p.Author.ID).Take(&p.Author).Error
+		err = db.Debug().Model(&User{}).Where("id = ?", p.AuthorID).Take(&p.Author).Error
 		if err != nil {
 			return &Post{}, err
 		}
@@ -108,7 +109,7 @@ func (p *Post) UpdateAPost(db *gorm.DB) (*Post, error) {
 		return &Post{}, err
 	}
 	if p.Guid == "" {
-		err = db.Debug().Model(&User{}).Where("id = ?", p.Author.ID).Take(&p.Author).Error
+		err = db.Debug().Model(&User{}).Where("id = ?", p.AuthorID).Take(&p.Author).Error
 		if err != nil {
 			return &Post{}, err
 		}
