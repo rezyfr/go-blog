@@ -9,16 +9,16 @@ import (
 )
 
 type Post struct {
-	Guid        string     `gorm:"primary_key;not null;unique" json:"guid"`
-	Link        string     `gorm:"not null;unique" json:"link"`
-	Title       string     `gorm:"size:255;not null;unique" json:"title"`
-	Content     string     `gorm:"not null;" json:"content"`
-	Description string     `gorm:"size:255" json:"description"`
-	Author      User       `json:"author"`
-	CategoryId  []uint32   `gorm:"not null" json:"categoryId"`
-	Thumbnail   string     `gorm:"not null" json:"thumbnail"`
-	CreatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	Guid        string    `gorm:"primary_key;not null;unique" json:"guid"`
+	Link        string    `gorm:"not null;unique" json:"link"`
+	Title       string    `gorm:"size:255;not null;unique" json:"title"`
+	Content     string    `gorm:"not null;" json:"content"`
+	Description string    `gorm:"size:255" json:"description"`
+	Author      User      `json:"author"`
+	CategoryId  string    `gorm:"not null" json:"categoryId"`
+	Thumbnail   string    `gorm:"not null" json:"thumbnail"`
+	CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 func (p *Post) Prepare() {
